@@ -1,0 +1,72 @@
+import streamlit as st
+import pandas as pd
+import time
+import random
+
+# ----- Styling -----
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-image: url("data:image/png;base64,%s");
+    background-size: cover;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.card {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 20px #6c3dd3;
+    color: white;
+    text-align: center;
+}
+.metric-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #cccccc;
+}
+.metric-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.metric-delta {
+    font-size: 16px;
+    color: #00ff99;
+}
+</style>
+""" % st.file_uploader("Upload Background Image", type=["png", "jpg", "jpeg"], label_visibility="collapsed").read().encode("base64").decode()
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# ----- Simulate Database Streaming -----
+def get_transaction_volume():
+    # Replace this with real DB query
+    return random.randint(50000, 100000)
+
+st.markdown('<div class="card">', unsafe_allow_html=True)
+
+# ---- Fetch Current and Previous Volume ----
+if "prev_volume" not in st.session_state:
+    st.session_state.prev_volume = 0
+
+current_volume = get_transaction_volume()
+delta = current_volume - st.session_state.prev_volume
+delta_color = "🟢" if delta >= 0 else "🔻"
+
+# ---- Display Metric Card ----
+st.markdown(f"""
+    <div class="metric-label">Total Transaction Volume</div>
+    <div class="metric-value">{current_volume:,}</div>
+    <div class="metric-delta">{delta_color} {delta:+,} since last check</div>
+""", unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ---- Save for next refresh ----
+st.session_state.prev_volume = current_volume
+
+# ---- Auto Refresh every 5 sec ----
+time.sleep(5)
+st.experimental_rerun()

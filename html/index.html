@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fraud Detection Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <header class="dashboard-header">
+      <div class="location">
+        <span>GHANA</span> • <span>EUR</span>
+      </div>
+      <h1>Fraud Detection Dashboard</h1>
+    </header>
+
+    <section class="top-section">
+      <div class="summary-card blue">
+        <h3>Transaction Volume</h3>
+        <p><input type="text" id="transactionVolumeInput" class="dslabel" value="GHS 0.00" readonly></p>
+      </div>
+      <div class="summary-card pink">
+        <h3>Suspicious Amount</h3>
+        <p><input type="text" id="SuspiciousVolumeInput" class="dslabelred" value="GHS 0.00" readonly></p>
+      </div>
+      <div class="summary-card profit">
+        <h3>Legitimate:</h3>
+        <p><input type="text" id="legitimateVolumeInput" class="dslabel" value="GHS 0.00" readonly></p>
+      </div>
+
+    </section>
+
+    <main class="dashboard-body">
+
+      <section class="center-panel">
+        <div class="product-cost">
+        <div id="donutChartCanvas" class="w-full h-[400px] bg-white rounded shadow"></div>
+        </div>
+
+        <div class="profit-chart">
+        <canvas id="fraudTrendChart"></canvas>
+        </div>
+ 
+        <div class="profit-chart">
+         <canvas id="areaChart"></canvas>
+		 </div>
+      </section>
+
+<section class="right-panel">
+  <div class="summary-card profit1 hidden" id="filterSection">
+  <label for="chartType">Start Date</label>
+    <input type="date" id="start-date" />
+  <label for="chartType">End Date</label>
+    <input type="date" id="end-date">
+
+    <label for="chartType">Chart Type</label>
+    <select id="chartType">
+      <option value="line">Line</option>
+      <option value="bar">Bar</option>
+    </select>
+
+    <label for="chartRange">Chart Range</label>
+    <input type="range" id="chartRange" min="10" max="100" value="50" />
+    <span id="rangeLabel">50</span>
+
+    <label for="QuarterlyDropdown">Quarter</label>
+    <select id="QuarterlyDropdown">
+      <option value="Q1">First Quarter</option>
+      <option value="Q2">Second Quarter</option>
+      <option value="Q3">Third Quarter</option>
+      <option value="Q4">Fourth Quarter</option>
+    </select>
+	<button class= "filterbutton" id="applyFilter">Apply Filter</button>
+      </div>
+	
+		 <div class="distribution">
+ 		<div id="mobilenetwork_count" style="width:100%;height:400px;"></div>
+          </div>
+		  
+         <div class="distribution">
+           <canvas id="riskChart"></canvas>
+		</div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Chart.js (for graph placeholders) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+  
+<!--   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script src="scripts.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
+</body>
+</html>

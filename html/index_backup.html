@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fraud Detection Dashboard</title>
+  <link rel="stylesheet" href="style3.css"/>
+<!--   <script src="https://cdn.tailwindcss.com"></script> -->
+</head>
+<body>
+  <div id="navbar" class="bg-[#1a112f] py-2 px-4 flex gap-4 text-sm text-white font-medium">
+  <a href="account_reg.html" class="hover:text-yellow-400 transition">Register New User</a>
+  <a href="user_account.html" class="hover:text-yellow-400 transition">Create User Profile</a>
+  <a href="#" class="hover:text-yellow-400 transition">Reports</a>
+  </div>
+  <div class="dashboard">
+    <!-- Row 1 -->
+    <div class="row">
+      <div class="card large">
+        <h3>Suspicious Transactions</h3>
+        <div class="metric-value">
+          <input type="text" id="transactionVolumeInput" placeholder="GHS 0.00" readonly>
+        </div>
+        <canvas id="areaChart" style="height: 300px;"></canvas>
+      </div>
+
+      <div class="card small interactive">
+        <h3>Controls</h3>
+        <label for="interactiveDate">Select Date:</label>
+        <input type="date" id="interactiveDate" style="width: 100%;">
+
+        <label for="chartRange">Adjust Chart:</label>
+        <input type="range" id="chartRange" min="10" max="100" value="50" style="width: 100%;">
+        <span id="rangeLabel">50</span>
+
+        <label for="chartType">Chart Type:</label>
+        <select id="chartType" style="width: 100%;">
+          <option value="line">Line</option>
+          <option value="bar">Bar</option>
+        </select>
+
+        <label for="QuarterlyDropdown">Reload Charts (Current Month)</label>
+        <select id="QuarterlyDropdown">
+          <option value="month">Reload</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="card small">
+        <h4>Top High-Risk Users</h4>
+        <canvas id="riskChart"></canvas>
+      </div>
+
+      <div class="card medium">
+        <h3>Monthly Transaction Type</h3>
+        <div id="donutChartCanvas" style="width:100%;height:400px;"></div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+      <div class="card small">
+        <h3>Suspicious Location Bubble Chart</h3>
+        <canvas id="bubbleChart"></canvas>
+        <label for="monthSlider">Month Selector:</label>
+        <input type="range" id="monthSlider" min="1" max="12" value="1" style="width: 100%;">
+        <span id="selectedMonthLabel">January</span>
+      </div>
+
+      <div class="card medium">
+        <h3>Summary</h3>
+        <div id="donutChart" style="width:100%;height:400px;"></div>
+      </div>
+    </div>
+
+    <!-- Report Table -->
+    <div class="report-table">
+      <h3>Recent Transactions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Sender</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Receiver</th>
+            <th>Fraud %</th>
+          </tr>
+        </thead>
+        <tbody id="highRiskBody"></tbody>
+      </table>
+      <div class="download-buttons-container">
+        <button type="button" onclick="downloadExcel()">Download Excel</button>
+        <button type="button" onclick="downloadPDF()">Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Libraries -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Dashboard Script -->
+  <script>
+const BASE_URL = "http://localhost:8000/suspicious";
+const today = new Date().toISOString().split("T")[0];
+const vibrantColors = ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff', '#ff9f40', '#00e676', '#d500f9', '#00b0ff', '#ff1744'];
+
+let areaChart = null;
+
+let areaChartData = {
+  labels: [],
+  datasets: [{
+    label: "Suspicious Transactions",
+    data: [],
+    backgroundColor: "rgba(255, 99, 132, 0.5)",
+    borderColor: "rgba(255, 99, 132, 1)",
+    fill: true,
+    tension: 0.4
+  }]
+};
+
+function createAreaChart(chartType = "line") {
+  if (areaChart) areaChart.destroy();
+  const ctx = document.getElementById("areaChart");
+  if (!ctx) return;
+
+  areaChart = new Chart(ctx, {
+    type: chartType,
+    data: areaChartData,
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: "#ffffff" } },
+        title: {
+          display: true,
+          text: "Suspicious Transactions Over Time",
+          color: "#ffffff",
+          font: { size: 18 }
+        }
+      },
+      layout: { padding: 10 },
+      scales: {
+        x: { ticks: { color: "#ffffff" }, grid: { color: "rgba(255,255,255,0.1)" } },
+        y: { ticks: { color: "#ffffff" }, grid: { color: "rgba(255,255,255,0.1)" } }
+      }
+    }
+  });
+}
+
+async function fetchAreaChartData(start, end) {
+  try {
+    let url = `${BASE_URL}/suspicious_transactions_by_day/`;
+    if (start && end) url += `?start_date=${start}&end_date=${end}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    areaChartData.labels = data.map(item => item.day);
+    areaChartData.datasets[0].data = data.map(item => item.suspicious_count);
+
+    if (areaChart) {
+      areaChart.update();
+    } else {
+      createAreaChart(document.getElementById("chartType").value || "line");
+    }
+  } catch (err) {
+    console.error("Area chart error:", err);
+  }
+}
+
+const riskChart = new Chart(document.getElementById("riskChart"), {
+  type: 'bar',
+  data: {
+    labels: [],
+    datasets: [{
+      label: 'Fraud Score',
+      data: [],
+      backgroundColor: vibrantColors,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Top High-Risk Users',
+        color: '#ffffff',
+        font: { size: 18 }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+      y: { ticks: { color: '#ffffff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+    }
+  }
+});
+
+async function updateTopRiskUsers(start, end) {
+  try {
+    const res = await fetch(`${BASE_URL}/top_high_risk_users/?start_date=${start}&end_date=${end}`);
+    const data = await res.json();
+    riskChart.data.labels = data.users.map(u => u.name);
+    riskChart.data.datasets[0].data = data.users.map(u => u.risk_score);
+    riskChart.update();
+  } catch (err) {
+    console.error("Risk user error:", err);
+  }
+}
+
+async function fetchTransactionVolume(start, end) {
+  try {
+    const res = await fetch(`${BASE_URL}/transaction_volume/?start_date=${start}&end_date=${end}`);
+    const data = await res.json();
+    const volume = (data.length > 0 && data[0].volume) ? parseFloat(data[0].volume).toFixed(2) : "0.00";
+    document.getElementById("transactionVolumeInput").value = `GHS ${volume}`;
+  } catch (err) {
+    console.error("Volume error:", err);
+    document.getElementById("transactionVolumeInput").value = "GHS 0.00";
+  }
+}
+
+async function fetchBoxPlot(start, end) {
+  try {
+    const res = await fetch(`${BASE_URL}/transaction_type_distribution/?start_date=${start}&end_date=${end}`);
+    const data = await res.json();
+
+    const traces = data.map(group => ({
+      y: group.amounts,
+      type: 'box',
+      name: group.type,
+      boxpoints: 'all',
+      jitter: 0.5,
+      whiskerwidth: 0.2,
+      marker: { size: 4 },
+      line: { width: 1 }
+    }));
+
+    const layout = {
+      title: 'Transaction Amount Distribution by Type',
+      yaxis: { title: 'Transaction Amount', zeroline: false },
+      boxmode: 'group',
+      height: 400,
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+
+    Plotly.newPlot('donutChartCanvas', traces, layout, { displayModeBar: false });
+  } catch (err) {
+    console.error("Box plot error:", err);
+  }
+}
+
+async function fetchDonutChart(month) {
+  try {
+    const res = await fetch(`${BASE_URL}/quarterly_transactions_by_month/?month=${month}`);
+    const data = await res.json();
+
+    const trace = {
+      labels: data.labels,
+      values: data.series,
+      type: 'pie',
+      hole: 0.6
+    };
+
+    const layout = {
+      title: 'Quarterly Transaction Distribution',
+      height: 400,
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+
+    Plotly.newPlot("donutChart", [trace], layout, { displayModeBar: false });
+  } catch (err) {
+    console.error("Quarterly chart error:", err);
+  }
+}
+
+async function loadHighRiskUsers(start, end) {
+  try {
+    const res = await fetch(`${BASE_URL}/detail_high_risk_users/?start_date=${start}&end_date=${end}`);
+    const data = await res.json();
+    const tbody = document.getElementById("highRiskBody");
+
+    if (data.data && data.data.length > 0) {
+      tbody.innerHTML = data.data.map(row => `
+        <tr>
+          <td>${row.trxdate}</td>
+          <td>${row.nameOrig}</td>
+          <td>${row.type}</td>
+          <td>${parseFloat(row.amount).toFixed(2)}</td>
+          <td>${row.nameDest}</td>
+          <td>${(row.fraud_probability * 100).toFixed(2)}%</td>
+        </tr>`).join("");
+    } else {
+      tbody.innerHTML = `<tr><td colspan="6">No high risk transactions found.</td></tr>`;
+    }
+  } catch (err) {
+    console.error("High risk users error:", err);
+    document.getElementById("highRiskBody").innerHTML = `<tr><td colspan="6">Failed to load data.</td></tr>`;
+  }
+}
+
+function downloadExcel() {
+  window.open(`${BASE_URL}/export/high_risk_users/excel`, "_blank");
+}
+
+function downloadPDF() {
+  window.open(`${BASE_URL}/export/high_risk_users/pdf`, "_blank");
+}
+
+const bubbleCtx = document.getElementById("bubbleChart").getContext("2d");
+let bubbleChart;
+
+async function fetchBubbleData(month) {
+  try {
+    const res = await fetch(`${BASE_URL}/suspicious_location/?month=${month}`);
+    const result = await res.json();
+    if (bubbleChart) bubbleChart.destroy();
+    bubbleChart = new Chart(bubbleCtx, {
+      type: 'bubble',
+      data: {
+        datasets: [{
+          label: "Fraud Locations",
+          data: result.data,
+          backgroundColor: 'rgba(255, 99, 132, 0.5)'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: { display: true, text: 'Fraud Bubble Chart by Location (Latitude vs Longitude)' }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Longitude' } },
+          y: { title: { display: true, text: 'Latitude' } }
+        }
+      }
+    });
+  } catch (err) {
+    console.error("Bubble chart error:", err);
+  }
+}
+
+const monthSlider = document.getElementById("monthSlider");
+const monthLabel = document.getElementById("selectedMonthLabel");
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+monthSlider.addEventListener("input", function () {
+  const month = parseInt(this.value);
+  monthLabel.textContent = monthNames[month - 1];
+  fetchBubbleData(month);
+});
+
+document.getElementById("chartType").addEventListener("change", function () {
+  createAreaChart(this.value);
+  const date = document.getElementById("interactiveDate").value || today;
+  const dt = new Date(date);
+  const start = new Date(dt.getFullYear(), dt.getMonth(), 1).toISOString().split("T")[0];
+  const end = new Date(dt.getFullYear(), dt.getMonth() + 1, 0).toISOString().split("T")[0];
+  fetchAreaChartData(start, end);
+});
+
+document.getElementById("interactiveDate").addEventListener("change", function () {
+  const selectedDate = new Date(this.value);
+  const year = selectedDate.getFullYear();
+  const month = selectedDate.getMonth();
+
+  const start = new Date(year, month, 1).toISOString().split("T")[0];
+  const end = new Date(year, month + 1, 0).toISOString().split("T")[0];
+
+  fetchAreaChartData(start, end);
+  fetchTransactionVolume(start, end);
+  fetchDonutChart(month + 1);
+  fetchBoxPlot(start, end);
+});
+
+document.getElementById("chartRange").addEventListener("input", function () {
+  document.getElementById("rangeLabel").textContent = this.value;
+});
+
+document.getElementById("QuarterlyDropdown").addEventListener("change", () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0];
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split("T")[0];
+  updateTopRiskUsers(start, end);
+  fetchTransactionsByDateRange(start, end);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0];
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split("T")[0];
+
+  const dateInput = document.getElementById("interactiveDate");
+  if (!dateInput.value) dateInput.value = today;
+
+  createAreaChart("line");
+  fetchAreaChartData(start, end);
+  fetchTransactionVolume(start, end);
+  fetchDonutChart(now.getMonth() + 1);
+  fetchBoxPlot(start, end);
+  fetchBubbleData(now.getMonth() + 1);
+  loadHighRiskUsers(start, end);
+  updateTopRiskUsers(start, end);
+  fetchTransactionsByDateRange(start, end);
+});
+</script>
+
+</body>
+</html>

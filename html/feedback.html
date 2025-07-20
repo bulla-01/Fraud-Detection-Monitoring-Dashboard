@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback - Neon Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="navbar"></div>
+
+  <div class="feedback-container">
+    <div class="card feedback-card">
+      <h2>Feedback Form</h2>
+      <form id="feedbackForm">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rate">Rate Our Service</label>
+          <select id="rate" required>
+            <option value="">Select Rating</option>
+            <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+            <option value="4">⭐⭐⭐⭐ (Good)</option>
+            <option value="3">⭐⭐⭐ (Average)</option>
+            <option value="2">⭐⭐ (Poor)</option>
+            <option value="1">⭐ (Very Poor)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="complaint">Complaint / Report</label>
+          <textarea id="complaint" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="scripts/common.js"></script>
+  <script src="scripts/feedback.js"></script>
+</body>
+</html>

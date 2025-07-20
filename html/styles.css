@@ -1,0 +1,322 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('bk.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+}
+
+.dashboard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: transparent;
+
+}
+
+.dashboard-header {
+  text-align: center;
+  color: #c58aff;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.dashboard-header .location {
+  font-size: 14px;
+  color: #aaa;
+}
+
+.top-section {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  background-color: transparent;
+  animation: slideUp 1s ease-out;
+  backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease;
+}
+
+.top-section:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.summary-card {
+  padding: 20px;
+  min-width: 160px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #ccc;   
+  border-radius: 8px;       
+  padding: 16px;                     
+  box-sizing: border-box;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+.summary-card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.dslabel {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.dslabelred {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #FF0000;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.metric-value input {
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: none;
+  background: linear-gradient(to right, #3b82f6, #9333ea);
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.summary-card p {
+  font-size: 24px;
+  margin: 5px 0;
+}
+
+.summary-card.blue {
+  background: linear-gradient(145deg, #1a4fa0, #256dd9);
+}
+
+.summary-card.pink {
+  background: linear-gradient(145deg, #8e2de2, #c471ed);
+}
+
+.summary-card.profit {
+  background: linear-gradient(145deg, #262626, #800080);
+}
+
+.summary-card.profit1 {
+  background: linear-gradient(145deg, #262626, #800000);
+}
+
+.summary-card .margin {
+  color: #00e6c3;
+  font-size: 14px;
+}
+
+.dashboard-body {
+  display: flex;
+  gap: 20px;
+  background-color: rgba(26, 17, 47, 0.3); /* semi-transparent version of #1a112f */
+  backdrop-filter: blur(10px); /* adds blur behind the element */
+  animation: fadeIn 1.2s ease;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.right-panel {
+  flex: 0 0 15%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background-color: transparent;
+  border-left: none;
+  box-shadow: none;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 5;
+  border-radius: 3;
+  background-color: transparent;
+  box-shadow: none;
+  
+}
+
+.right-panel label {
+  font-size: 0.7rem;
+  font-weight: 400;
+  margin-bottom: 2px;
+  color: #fff;
+  text-align: left;
+}
+
+.right-panel input[type="date"],
+.right-panel input[type="range"],
+.right-panel select {
+  width: 90%;
+  padding: 6px 8px;
+  font-size: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: none;
+  box-shadow: none;
+}
+
+/* Optional: Range Label styling */
+#rangeLabel {
+  font-size: 0.60rem;
+  color: #FFFFFF;
+  margin-top: 2px;
+  text-align: left;
+}
+
+.filterbutton {
+  background-color: #3b82f6; /* Tailwind's blue-500 */
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.filterbutton:hover {
+  background-color: #2563eb; /* Tailwind's blue-600 */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.filterbutton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Focus ring */
+}
+
+.filterbutton:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.left-panel,
+.center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: transparent;
+/*   border: 1px solid #ccc;  */  
+  border-radius: 8px;       
+  padding: 16px;            
+  height: 600px;            
+/*   box-sizing: border-box;  */ 
+}
+
+.hidden {
+  display: none;
+}
+
+.calendar,
+.graph,
+.compare-chart,
+.profit-chart,
+.distribution,
+.product-cost,
+.material-ratio {
+  background-color: transparent;
+  border: 1px solid #ccc;   
+  border-radius: 8px;       
+  padding: 16px;                     
+  box-sizing: border-box;  
+}
+
+.calendar,
+.graph,
+.compare-chart,
+.profit-chart,
+.distribution,
+.material-ratio,
+.product-cost canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 400px;
+}
+
+
+.calendar:hover,
+.graph:hover,
+.compare-chart:hover,
+.profit-chart:hover,
+.distribution:hover,
+.material-ratio:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.07);
+}
+
+.calendar h4,
+.graph h3,
+.compare-chart h3,
+.profit-chart h3,
+.distribution h4,
+.material-ratio h4 {
+  margin-bottom: 10px;
+  color: #c58aff;
+  font-weight: 500;
+}
+
+.calendar-weeks p {
+  margin: 5px 0;
+}
+
+.distribution-section {
+  display: flex;
+  gap: 20px;
+}
+
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 8px solid #ff00ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0c0c20;
+  font-size: 14px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #ff00ff55;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

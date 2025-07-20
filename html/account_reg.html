@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Account Registration</title>
+    <link rel="stylesheet" href="style.css" />
+	  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+   <!-- Navigation Bar -->
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="account_reg.html">Account Registration</a></li>
+      <li><a href="#">Feedback</a></li>
+    </ul>
+  </nav>
+  <!--  Title -->
+  <div class="animated-title">Account Registration Portal</div>
+<!-- Main Content -->
+<main>
+   
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+
+    <!-- Sidebar -->
+    <aside class="bg-[#1f1533] p-6 rounded-xl shadow-lg space-y-6 text-sm">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-white text-blue-700 font-bold rounded-full flex items-center justify-center">🕒</div>
+        <div>
+          <div class="uppercase text-gray-400 text-[10px]">Date & Time</div>
+          <div id="currentDateTime" class="text-sm font-semibold"></div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 border border-white rounded-full flex items-center justify-center">2</div>
+        <div>
+          <div class="uppercase text-gray-400 text-[10px]">
+		  <a href="#" class="hover:text-blue-700 hover:underline underline-offset-4 transition">Mobile Money</a>
+		  </div>
+       </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 border border-white rounded-full flex items-center justify-center">3</div>
+        <div>
+          <div class="uppercase text-gray-400 text-[10px]">
+		  <a href="#" class="hover:text-blue-700 hover:underline underline-offset-4 transition">Card Payment</a>
+		  </div>
+       </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 border border-white rounded-full flex items-center justify-center">4</div>
+        <div>
+          <div class="uppercase text-gray-400 text-[10px]">
+		  <a href="#" class="hover:text-blue-700 hover:underline underline-offset-4 transition">Bank Transfer</a>
+		  </div>
+       </div>
+      </div>	  
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 border border-white rounded-full flex items-center justify-center">5</div>
+        <div>
+          <div class="uppercase text-gray-400 text-[10px]">
+		  <a href="#" class="hover:text-blue-700 hover:underline underline-offset-4 transition">Bank Transfer</a>
+		  </div>
+       </div>
+      </div>
+
+    </aside>
+
+    <!-- Form -->
+    <section class="md:col-span-2 bg-[#261c44] p-8 rounded-xl shadow-xl">
+<!--       <div class="form-row">
+        <div class="form-group">
+          <h2 class="text-lg font-bold text-yellow-300">Account Form</h2>
+          <p class="text-sm text-gray-300">Provide customer information to set up a new account.</p>
+        </div>
+      </div> -->
+
+      <form id="transactionForm" class="text-sm w-full">
+        <table class="w-full table-auto border-separate border-spacing-y-4 text-left">
+          <tbody>
+
+            <tr>
+              <td class="pr-4 w-1/2">
+                <label>Phone Number:</label>
+                <input type="text" id="phonenumber" name="phonenumber" placeholder="Phone Number" class="form-input w-full text-blue-900" required />
+              </td>
+              <td class="w-1/2">
+                <label>Account Name:</label>
+                <input type="text" id="fn" name="fn" placeholder="Account Name" class="form-input w-full text-blue-900" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pr-4 w-1/2">
+                <label>Date of Birth:</label>
+                <input type="date" id="dob" name="dob" class="form-input w-full text-blue-900" required />
+              </td>
+              <td class="w-1/2">
+                <label>Email:</label>
+                <input type="text" id="email" name="email" placeholder="Email" class="form-input w-full text-blue-900" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pr-4 w-1/2">
+                <label>House Address:</label>
+                <input type="text" id="hseadd" name="hseadd" class="form-input w-full text-blue-900" required />
+              </td>
+              <td class="w-1/2">
+                <label>Identification Number:</label>
+                <input type="text" id="idno" name="idno" class="form-input w-full text-blue-900" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pr-4 w-1/2">
+                <label>Tax Identification No.:</label>
+                <input type="text" id="tin" name="tin" placeholder="Tin" class="form-input w-full text-blue-900" required />
+              </td>
+              <td class="w-1/2">
+                <label>Next of Kin:</label>
+                <input type="text" id="next_of_kin" name="next_of_kin" class="form-input w-full text-blue-900" required />
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pr-4 w-1/2">
+                <label>Next of Kin Contact:</label>
+                <input type="text" id="next_of_kin_phone" name="next_of_kin_phone" class="form-input w-full text-blue-900" required />
+              </td>
+              <td class="w-1/2">
+			    <label>Default Password:</label>
+			    <input type="text" id="pin" name="pin" placeholder="Defaul" Value="1234" class="form-input w-full text-blue-900" readonly />
+			  </td>
+            </tr>
+
+            <tr>
+              <td class="flex flex-col space-y-2 mr-4">
+                <!-- <label for="amt" class="text-sm font-medium text-white">Initial Deposit GHC:</label>
+                <textarea
+                  id="amt"
+                  name="amt"
+                  placeholder="Enter amount..."
+                  class="form-input bg-white text-blue-900 rounded-md px-3 py-2 min-h-[50px] focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-shadow duration-300 resize-none"
+                  required
+                ></textarea> -->
+              </td>
+              <td class="pt-8 align-bottom">
+                <button
+                  type="submit"
+                  class="w-full bg-yellow-400 text-black py-2 rounded-md font-semibold hover:bg-yellow-300 transition"
+                >
+                  Submit Transaction
+                </button>
+              </td>
+            </tr>
+
+            <input type="hidden" name="oldbalanceOrg" id="oldbalanceOrg" />
+            <input type="hidden" name="newbalanceOrig" id="newbalanceOrig" />
+            <input type="hidden" name="newbalanceDest" id="newbalanceDest" />
+            <input type="hidden" name="step" id="step" value="1" />
+
+          </tbody>
+        </table>
+      </form>
+
+    </section>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-[#1a112f] py-4 text-center text-sm text-gray-400">
+  &copy; 2025 BentJun Mobile Money Platform Inc. All rights reserved.
+</footer>
+
+<!-- JavaScript -->
+<script>
+  setInterval(() => {
+    document.getElementById("currentDateTime").textContent = new Date().toLocaleString();
+  }, 1000);
+
+  async function submitTransaction(event) {
+    event.preventDefault();
+    const form = document.getElementById("transactionForm");
+
+    const transactionData = {
+      phone_number: form.phonenumber.value,
+      fullname: form.fn.value,
+      date_of_birth: form.dob.value,
+      email: form.email.value,
+      house_address: form.hseadd.value,
+      latitude: 5.6037,
+      longitude: -0.1870,
+      id_number: form.idno.value,
+      tin: form.tin.value,
+      next_of_kin: form.next_of_kin.value,
+      next_of_kin_phone: form.next_of_kin_phone.value,
+      pin: form.pin.value
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/new_registration/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(transactionData)
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`✅ Registration Successful!`);
+		
+		form.reset();
+      
+      } else {
+        alert("❌ Prediction failed. Please check the input.");
+      }
+    } catch (error) {
+      console.error("Error submitting transaction:", error);
+      alert("⚠️ Server error occurred. Please try again.");
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("transactionForm");
+    if (form) {
+      form.addEventListener("submit", submitTransaction);
+    }
+  });
+</script>
+</body>
+</html>

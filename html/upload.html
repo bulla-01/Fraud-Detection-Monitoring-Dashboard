@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload & Report - Neon Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0f0f1a;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Navbar */
+  #navbar {
+    background: linear-gradient(90deg, #8e2de2, #4a00e0);
+    padding: 0.5rem 2rem; /* smaller padding */
+    display: flex;
+    justify-content: flex-end; /* shift links to the right */
+    align-items: center;
+    gap: 2rem;
+    height: 40px; /* fixed smaller height */
+  }
+
+  #navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem; /* slightly smaller text */
+    transition: color 0.3s;
+  }
+
+  #navbar a:hover {
+    color: #ffcc00; /* yellow on hover */
+  }
+
+  /* Upload Container */
+  .upload-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .upload-card {
+    background: #1a1a2e;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #8e2de2;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .upload-card h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.7rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 0.5rem;
+    background: #0f0f1a;
+    border: 1px solid #8e2de2;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(to right, #8e2de2, #4a00e0);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+  }
+
+  /* Footer */
+  #footer {
+    background-color: #1a1a2e;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1rem;
+    color: #aaa;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .upload-card {
+      padding: 1rem;
+    }
+
+    #navbar {
+      justify-content: center; /* center links on very small screens */
+    }
+  }
+</style>
+
+</head>
+<body>
+
+  <div id="navbar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="upload.html">Upload</a>
+  </div>
+
+  <div class="upload-container">
+    <div class="card upload-card">
+      <h2>Upload File & Generate Report</h2>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="fileInput">Select a File</label>
+          <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" required>
+        </div>
+
+        <div id="fileInfo" class="file-info hidden"></div>
+
+        <button type="submit" class="submit-btn">Generate Report</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="footer">
+    &copy; 2025 Fraud Detection System | All Rights Reserved
+  </div>
+
+  <script src="scripts/common.js"></script>
+  <script src="scripts/upload.js"></script>
+</body>
+</html>

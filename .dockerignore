@@ -1,0 +1,5 @@
+*.py
+*.log
+.git
+Dockerfile
+.dockerignore
