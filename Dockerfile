@@ -1,17 +1,22 @@
-# Use Nginx base image
+# Nginx base image
 FROM nginx:stable-alpine
 
-# Nginx it listens on port 8001)
+# Working directory
+WORKDIR /usr/share/nginx/html
+
+# Copy custom Nginx configuration
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy static assets and HTML files
-COPY ./html/ /usr/share/nginx/html/
-COPY ./Images /usr/share/nginx/html/images
-COPY ./styles /usr/share/nginx/html/styles
-#COPY ./html/favicon.ico /usr/share/nginx/html/favicon.ico
+COPY ./html/ ./
+COPY ./Images ./images
+COPY ./styles ./styles
 
-# Expose port 8001 as per custom config
+# include favicon
+# COPY ./html/favicon.ico ./favicon.ico
+
+# Exposing port 8001
 EXPOSE 8001
 
-# Start Nginx in the foreground
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
