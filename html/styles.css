@@ -2,12 +2,65 @@
   box-sizing: border-box;
 }
 
-body {
+/* body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: url('bk.jpg') no-repeat center center fixed;
   background-size: cover;
   color: white;
+} */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0f0c1e;
+  color: #fff;
+  background-size: cover;
+}
+
+.hidden {
+    display: none;
+}
+
+.navbar {
+  background-color: #1a112f;
+  padding: 1rem 0rem;
+  display: flex;
+  justify-content: flex-end;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar .nav-links li a {
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-links li a:hover {
+  color: #ffcc00;
+}
+
+.navbar .nav-links li a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #ffcc00;
+  bottom: -4px;
+  left: 0;
+  transition: 0.3s ease;
+}
+
+.navbar .nav-links li a:hover::after {
+  width: 100%;
 }
 
 .dashboard {
@@ -81,7 +134,7 @@ body {
 .summary-card.blue { background: linear-gradient(145deg, #1a4fa0, #256dd9); }
 .summary-card.pink { background: linear-gradient(145deg, #8e2de2, #c471ed); }
 .summary-card.profit { background: linear-gradient(145deg, #262626, #800080); }
-.summary-card.profit1 { background: linear-gradient(145deg, #262626, #800000); }
+.summary-card.profit1 { background: transparent; }
 
 .summary-card .margin {
   color: #00e6c3;
