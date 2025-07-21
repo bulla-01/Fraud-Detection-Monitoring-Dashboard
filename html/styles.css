@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -12,9 +16,11 @@ body {
   flex-direction: column;
   gap: 20px;
   background-color: transparent;
-
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* HEADER */
 .dashboard-header {
   text-align: center;
   color: #c58aff;
@@ -26,13 +32,13 @@ body {
   color: #aaa;
 }
 
+/* TOP SECTION */
 .top-section {
   display: flex;
   gap: 20px;
   justify-content: center;
-  background-color: transparent;
-  animation: slideUp 1s ease-out;
   backdrop-filter: blur(10px);
+  animation: slideUp 1s ease-out;
   transition: background-color 0.3s ease;
 }
 
@@ -40,19 +46,20 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-
+/* SUMMARY CARDS */
 .summary-card {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
   min-width: 160px;
   text-align: center;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
   background-color: transparent;
-  border: 1px solid #ccc;   
-  border-radius: 8px;       
-  padding: 16px;                     
-  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .summary-card:hover {
@@ -64,28 +71,35 @@ body {
   margin: 0;
   font-size: 16px;
   color: #ccc;
-  transition: color 0.3s;
 }
 
-.dslabel {
+.summary-card p {
+  font-size: 24px;
+  margin: 5px 0;
+}
+
+.summary-card.blue { background: linear-gradient(145deg, #1a4fa0, #256dd9); }
+.summary-card.pink { background: linear-gradient(145deg, #8e2de2, #c471ed); }
+.summary-card.profit { background: linear-gradient(145deg, #262626, #800080); }
+.summary-card.profit1 { background: linear-gradient(145deg, #262626, #800000); }
+
+.summary-card .margin {
+  color: #00e6c3;
+  font-size: 14px;
+}
+
+/* VALUE LABELS */
+.dslabel, .dslabelred {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #ffffff;
   background-color: transparent;
   border: none;
   outline: none;
   text-align: center;
 }
 
-.dslabelred {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #FF0000;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  text-align: center;
-}
+.dslabel { color: #ffffff; }
+.dslabelred { color: #FF0000; }
 
 .metric-value input {
   font-size: 1.6rem;
@@ -99,40 +113,26 @@ body {
   text-align: center;
 }
 
-.summary-card p {
-  font-size: 24px;
-  margin: 5px 0;
-}
-
-.summary-card.blue {
-  background: linear-gradient(145deg, #1a4fa0, #256dd9);
-}
-
-.summary-card.pink {
-  background: linear-gradient(145deg, #8e2de2, #c471ed);
-}
-
-.summary-card.profit {
-  background: linear-gradient(145deg, #262626, #800080);
-}
-
-.summary-card.profit1 {
-  background: linear-gradient(145deg, #262626, #800000);
-}
-
-.summary-card .margin {
-  color: #00e6c3;
-  font-size: 14px;
-}
-
+/* BODY PANELS */
 .dashboard-body {
   display: flex;
   gap: 20px;
-  background-color: rgba(26, 17, 47, 0.3); /* semi-transparent version of #1a112f */
-  backdrop-filter: blur(10px); /* adds blur behind the element */
+  background-color: rgba(26, 17, 47, 0.3);
+  backdrop-filter: blur(10px);
   animation: fadeIn 1.2s ease;
   flex-direction: row;
   align-items: flex-start;
+}
+
+.left-panel, .center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 16px;
+  height: 600px;
 }
 
 .right-panel {
@@ -142,19 +142,6 @@ body {
   gap: 10px;
   padding: 12px;
   background-color: transparent;
-  border-left: none;
-  box-shadow: none;
-}
-
-.summary-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 5;
-  border-radius: 3;
-  background-color: transparent;
-  box-shadow: none;
-  
 }
 
 .right-panel label {
@@ -165,8 +152,7 @@ body {
   text-align: left;
 }
 
-.right-panel input[type="date"],
-.right-panel input[type="range"],
+.right-panel input,
 .right-panel select {
   width: 90%;
   padding: 6px 8px;
@@ -174,123 +160,64 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-  transition: none;
-  box-shadow: none;
 }
 
-/* Optional: Range Label styling */
 #rangeLabel {
-  font-size: 0.60rem;
-  color: #FFFFFF;
+  font-size: 0.6rem;
+  color: #fff;
   margin-top: 2px;
   text-align: left;
 }
 
+/* BUTTON */
 .filterbutton {
-  background-color: #3b82f6; /* Tailwind's blue-500 */
-  color: #ffffff;
+  background-color: #3b82f6;
+  color: #fff;
   font-weight: 600;
   padding: 0.6rem 1.5rem;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   font-size: 1rem;
-  letter-spacing: 0.5px;
 }
 
 .filterbutton:hover {
-  background-color: #2563eb; /* Tailwind's blue-600 */
+  background-color: #2563eb;
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .filterbutton:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Focus ring */
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.5);
 }
 
 .filterbutton:active {
   transform: scale(0.97);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.left-panel,
-.center-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* CHARTS & PANELS */
+.calendar, .graph, .compare-chart, .profit-chart, .distribution, .material-ratio, .product-cost {
   background-color: transparent;
-/*   border: 1px solid #ccc;  */  
-  border-radius: 8px;       
-  padding: 16px;            
-  height: 600px;            
-/*   box-sizing: border-box;  */ 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-.hidden {
-  display: none;
-}
-
-.calendar,
-.graph,
-.compare-chart,
-.profit-chart,
-.distribution,
-.product-cost,
-.material-ratio {
-  background-color: transparent;
-  border: 1px solid #ccc;   
-  border-radius: 8px;       
-  padding: 16px;                     
-  box-sizing: border-box;  
-}
-
-.calendar,
-.graph,
-.compare-chart,
-.profit-chart,
-.distribution,
-.material-ratio,
-.product-cost canvas {
-  width: 100% !important;
-  height: auto !important;
-  max-height: 400px;
-}
-
-
-.calendar:hover,
-.graph:hover,
-.compare-chart:hover,
-.profit-chart:hover,
-.distribution:hover,
-.material-ratio:hover {
+.calendar:hover, .graph:hover, .compare-chart:hover, .profit-chart:hover, .distribution:hover, .material-ratio:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(255, 255, 255, 0.07);
 }
 
-.calendar h4,
-.graph h3,
-.compare-chart h3,
-.profit-chart h3,
-.distribution h4,
-.material-ratio h4 {
+.calendar h4, .graph h3, .compare-chart h3, .profit-chart h3, .distribution h4, .material-ratio h4 {
   margin-bottom: 10px;
   color: #c58aff;
   font-weight: 500;
 }
 
-.calendar-weeks p {
-  margin: 5px 0;
-}
-
-.distribution-section {
-  display: flex;
-  gap: 20px;
-}
-
+/* CIRCLE */
 .circle {
   width: 120px;
   height: 120px;
@@ -302,7 +229,7 @@ body {
   background: #0c0c20;
   font-size: 14px;
   color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s;
 }
 
 .circle:hover {
@@ -310,7 +237,7 @@ body {
   box-shadow: 0 0 20px #ff00ff55;
 }
 
-/* Animations */
+/* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -321,84 +248,32 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Adjustments */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
-  .dashboard-body {
-    flex-direction: column;
-  }
-
-  .top-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .right-panel {
-    flex: 1;
-    width: 100%;
-    order: 3;
-  }
-
-  .center-panel {
-    width: 100%;
-    order: 2;
-  }
-
-  .summary-card {
-    width: 90%;
-    max-width: 400px;
-  }
+  .dashboard-body { flex-direction: column; }
+  .top-section { flex-direction: column; align-items: center; }
+  .right-panel { flex: 1; width: 100%; order: 3; }
+  .center-panel { width: 100%; order: 2; }
+  .summary-card { width: 90%; max-width: 400px; }
 }
 
 @media (max-width: 768px) {
-  .dashboard {
-    padding: 10px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .summary-card {
-    font-size: 0.9rem;
-    padding: 12px;
-  }
-
-  .dslabel, .dslabelred {
-    font-size: 1.2rem;
-  }
-
-  .right-panel input,
-  .right-panel select {
-    font-size: 0.75rem;
-    width: 95%;
-  }
-
-  .filterbutton {
-    font-size: 0.9rem;
-    padding: 0.5rem 1.2rem;
+  .dashboard { padding: 10px; }
+  .dashboard-header h1 { font-size: 1.5rem; }
+  .summary-card { font-size: 0.9rem; padding: 12px; }
+  .summary-card p { font-size: 1.5rem; }
+  .dslabel, .dslabelred { font-size: 1.2rem; }
+  .right-panel input, .right-panel select { font-size: 0.75rem; width: 95%; }
+  .filterbutton { font-size: 0.9rem; padding: 0.5rem 1.2rem; }
+  .graph, .calendar, .compare-chart, .profit-chart, .distribution, .material-ratio {
+    width: 95%; margin: 0 auto 20px auto; padding: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .dashboard-header h1 {
-    font-size: 1.2rem;
-  }
-
-  .summary-card p {
-    font-size: 18px;
-  }
-
-  .calendar,
-  .graph,
-  .compare-chart,
-  .profit-chart,
-  .distribution,
-  .material-ratio {
+  .dashboard-header h1 { font-size: 1.2rem; }
+  .summary-card p { font-size: 18px; }
+  .calendar, .graph, .compare-chart, .profit-chart, .distribution, .material-ratio {
     padding: 8px;
   }
-}
-
-.dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
 }
